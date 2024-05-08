@@ -177,7 +177,7 @@ server.use('/users', isAuth(), userRoutes.routes);
 server.use('/auth', authRoutes.routes);
 server.use('/cart', isAuth(), cartRoutes.routes);
 server.use('/orders', isAuth(), orderRoutes.routes);
-
+server.get('*', (req, res) => res.sendFile(path.resolve('build', 'index.html')));
 
 // PAYMENTS
 // const stripe = require("stripe")(process.env.STRIPE_SERVER_KEY);
