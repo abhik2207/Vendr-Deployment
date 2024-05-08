@@ -28,30 +28,30 @@ const { isAuth, sanitizeUser, cookieExtractor } = require('./services/common');
 
 
 // WEBHOOK FOR PAYMENTS
-// const endpointSecret = process.env.WEBHOOK_ENDPOINT_SECRET;
-// server.post('/webhook', express.raw({ type: 'application/json' }), (request, response) => {
-//     const sig = request.headers['stripe-signature'];
+const endpointSecret = process.env.WEBHOOK_ENDPOINT_SECRET;
+server.post('/webhook', express.raw({ type: 'application/json' }), (request, response) => {
+    const sig = request.headers['stripe-signature'];
 
-//     let event;
+    let event;
 
-//     try {
-//         event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
-//     } catch (err) {
-//         response.status(400).send(`Webhook Error: ${err.message}`);
-//         return;
-//     }
+    try {
+        event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+    } catch (err) {
+        response.status(400).send(`Webhook Error: ${err.message}`);
+        return;
+    }
 
-//     switch (event.type) {
-//         case 'payment_intent.succeeded':
-//             const paymentIntentSucceeded = event.data.object;
-//             console.log({paymentIntentSucceeded});
-//             break;
-//         default:
-//             console.log(`Unhandled event type ${event.type}`);
-//     }
+    switch (event.type) {
+        case 'payment_intent.succeeded':
+            const paymentIntentSucceeded = event.data.object;
+            console.log({paymentIntentSucceeded});
+            break;
+        default:
+            console.log(`Unhandled event type ${event.type}`);
+    }
 
-//     response.send();
-// });
+    response.send();
+});
 
 
 // JWT Token Authentication
@@ -180,23 +180,23 @@ server.use('/orders', isAuth(), orderRoutes.routes);
 
 
 // PAYMENTS
-// const stripe = require("stripe")(process.env.STRIPE_SERVER_KEY);
-// server.post("/create-payment-intent", async (req, res) => {
-//     const { totalAmount } = req.body;
+const stripe = require("stripe")(process.env.STRIPE_SERVER_KEY);
+server.post("/create-payment-intent", async (req, res) => {
+    const { totalAmount } = req.body;
 
-//     const paymentIntent = await stripe.paymentIntents.create({
-//         amount: totalAmount * 100,
-//         currency: "inr",
-//         automatic_payment_methods: {
-//             enabled: true,
-//         },
-//         // payment_method: 'pm_card_visa'
-//     });
+    const paymentIntent = await stripe.paymentIntents.create({
+        amount: totalAmount * 100,
+        currency: "inr",
+        automatic_payment_methods: {
+            enabled: true,
+        },
+        // payment_method: 'pm_card_visa'
+    });
 
-//     res.send({
-//         clientSecret: paymentIntent.client_secret,
-//     });
-// });
+    res.send({
+        clientSecret: paymentIntent.client_secret,
+    });
+});
 
 
 // DB CONNECT
