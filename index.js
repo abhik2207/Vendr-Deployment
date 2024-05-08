@@ -182,7 +182,7 @@ server.get('*', (req, res) => res.sendFile(path.resolve('build', 'index.html')))
 // PAYMENTS
 // const stripe = require("stripe")(process.env.STRIPE_SERVER_KEY);
 // server.post("/create-payment-intent", async (req, res) => {
-//     const { totalAmount, orderId } = req.body;
+//     const { totalAmount } = req.body;
 
 //     const paymentIntent = await stripe.paymentIntents.create({
 //         amount: totalAmount * 100,
@@ -191,7 +191,7 @@ server.get('*', (req, res) => res.sendFile(path.resolve('build', 'index.html')))
 //             enabled: true,
 //         },
 //         metadata: {
-//             orderId
+//             order_id: currentOrder.id
 //         },
 //         // payment_method: 'pm_card_visa'
 //     });
