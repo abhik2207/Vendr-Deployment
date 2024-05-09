@@ -25,11 +25,12 @@ const cartRoutes = require('./routes/Cart');
 const orderRoutes = require('./routes/Orders');
 const { User } = require('./model/User');
 const { isAuth, sanitizeUser, cookieExtractor } = require('./services/common');
+const { Order } = require('./model/Order');
 
 
 // WEBHOOK FOR PAYMENTS
 // const endpointSecret = process.env.WEBHOOK_ENDPOINT_SECRET;
-// server.post('/webhook', express.raw({ type: 'application/json' }), (request, response) => {
+// server.post('/webhook', express.raw({ type: 'application/json' }), async (request, response) => {
 //     const sig = request.headers['stripe-signature'];
 
 //     let event;
@@ -45,6 +46,10 @@ const { isAuth, sanitizeUser, cookieExtractor } = require('./services/common');
 //         case 'payment_intent.succeeded':
 //             const paymentIntentSucceeded = event.data.object;
 //             console.log({paymentIntentSucceeded});
+//             const order = await Order.findById(paymentIntentSucceeded.metadata.orderId);
+//             order.paymentStatus = 'received';
+//             await order.save();
+
 //             break;
 //         default:
 //             console.log(`Unhandled event type ${event.type}`);

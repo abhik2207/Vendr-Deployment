@@ -8,7 +8,8 @@ const orderSchema = new Schema({
     user: { type: Schema.Types.ObjectId, ref: 'User', required: [true, 'Provide a user ID'] },
     selectedPaymentMode: { type: String, required: [true, 'Please provide a payment mode for the order'] },
     selectedAddress: { type: Schema.Types.Mixed, required: [true, 'Please provide an address for the order'] },
-    status: { type: String, required: [true, 'Please provide a status for the order'], default: 'pending' }
+    status: { type: String, required: [true, 'Please provide a status for the order'], default: 'pending' },
+    paymentStatus: { type: String, required: [true, 'Please provide a status for the order'], default: 'pending' }
 });
 
 const virtual = orderSchema.virtual('id');
