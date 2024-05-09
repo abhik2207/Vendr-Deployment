@@ -15,6 +15,13 @@ exports.fetchOrdersByUser = async (req, res) => {
 exports.createOrder = async (req, res) => {
     const order = new Order(req.body);
 
+    if(req.body.selectedPaymentMode === 'card') {
+        order.paymentStatus = 'received';
+    }
+    else if (req.body.selectedPaymentMode === 'cash') {
+        order.paymentStatus = 'pending';
+    }
+
     order.save()
         .then(savedDocument => {
             console.log("~ Created an order!");
