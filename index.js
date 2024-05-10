@@ -25,7 +25,7 @@ const cartRoutes = require('./routes/Cart');
 const orderRoutes = require('./routes/Orders');
 const { User } = require('./model/User');
 const { isAuth, sanitizeUser, cookieExtractor } = require('./services/common');
-const { Order } = require('./model/Order');
+// const { Order } = require('./model/Order');
 
 
 // WEBHOOK FOR PAYMENTS
