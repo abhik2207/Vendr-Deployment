@@ -49,6 +49,13 @@ exports.loginUser = async (req, res) => {
         .json({ id: user.id, role: user.role });
 };
 
+exports.logoutUser = async (req, res) => {
+    res
+        .cookie('jwt', null, { expires: new Date(Date.now()), httpOnly: true })
+        .sendStatus(200);
+};
+
+
 exports.checkAuth = async (req, res) => {
     if (req.user) {
         res.json(req.user);
@@ -68,6 +75,7 @@ exports.resetPasswordRequest = async (req, res) => {
         await user.save();
 
         const resetPageLink = "https://vendr-deployment.vercel.app/reset-password?token=" + token + "&email=" + email;
+        // const resetPageLink = "http://localhost:3000/reset-password?token=" + token + "&email=" + email;
         const subject = "Reset your Vendr password";
         const text = "Reset your Vendr password";
         const html = `<p>Click <a href="${resetPageLink}">here</a> to reset your password</p>`;
