@@ -1,4 +1,5 @@
 const { Order } = require("../model/Order");
+const { sendMail, invoiceTemplate } = require("../services/common");
 
 exports.fetchOrdersByUser = async (req, res) => {
     const { id } = req.user;
@@ -24,6 +25,12 @@ exports.createOrder = async (req, res) => {
 
     order.save()
         .then(savedDocument => {
+            sendMail({
+                to: order.selectedAddress.email,
+                subject: "Vendr - Order Invoice",
+                text: `Vendr - Order Invoice - #${order.id}`,
+                html: invoiceTemplate(order)
+            });
             console.log("~ Created an order!");
             res.status(201).json(savedDocument);
         })
