@@ -10,7 +10,7 @@ const orderSchema = new Schema({
     selectedAddress: { type: Schema.Types.Mixed, required: [true, 'Please provide an address for the order'] },
     status: { type: String, required: [true, 'Please provide a status for the order'], default: 'pending' },
     paymentStatus: { type: String, required: [true, 'Please provide a status for the order'], default: 'pending' }
-});
+}, {timestamps: true});
 
 const virtual = orderSchema.virtual('id');
 virtual.get(function () {
