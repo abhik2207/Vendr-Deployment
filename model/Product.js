@@ -8,6 +8,7 @@ const productSchema = new Schema({
     description: { type: String, required: [true, 'Please provide a description for the product'] },
     price: { type: Number, min: [0, 'Price of product cannot be less than 0'], required: [true, 'Please provide a price for the product'], max: [100000, 'Price of product cannot be greater than 100,000'] },
     discountPercentage: { type: Number, min: [0, 'Discount percentage of product cannot be less than 0'], max: [90, 'Discount percentage of product cannot be gearter than 90'] },
+    discountedPrice: { type: Number },
     rating: { type: Number, min: [0, 'Rating of product cannot be less than 0'], max: [5, 'Rating of product cannot be greater than 5'], default: 0 },
     stock: { type: Number, min: [0, 'Stock of product cannot be less than 0'], default: 0 },
     thumbnail: { type: String, required: [true, 'Provide a thumbnail of the product'] },
@@ -18,10 +19,14 @@ const productSchema = new Schema({
     deleted: { type: Boolean, default: false }
 });
 
-const virtual = productSchema.virtual('id');
-virtual.get(function () {
+const virtualId = productSchema.virtual('id');
+virtualId.get(function () {
     return this._id;
 });
+// const virtualDiscountedPrice = productSchema.virtual('discountedPrice');
+// virtualDiscountedPrice.get(function () {
+//     return Math.round(this.price * (1 - this.discountPercentage / 100));
+// });
 productSchema.set('toJSON', {
     virtuals: true,
     versionKey: false,
