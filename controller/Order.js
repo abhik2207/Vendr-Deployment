@@ -1,5 +1,6 @@
 const { Order } = require("../model/Order");
 const { sendMail, invoiceTemplate } = require("../services/common");
+const { Product } = require("../model/Product");
 
 exports.fetchOrdersByUser = async (req, res) => {
     const { id } = req.user;
@@ -21,6 +22,12 @@ exports.createOrder = async (req, res) => {
     }
     else if (req.body.selectedPaymentMode === 'cash') {
         order.paymentStatus = 'pending';
+    }
+
+    for(let item of order.items) {
+        const product = await Product.findOne({_id: item.product.id});
+        product.$inc('stock', -1*item.quantity);
+        await product.save();
     }
 
     order.save()
