@@ -23,6 +23,7 @@ const userRoutes = require('./routes/Users');
 const authRoutes = require('./routes/Auth');
 const cartRoutes = require('./routes/Cart');
 const orderRoutes = require('./routes/Orders');
+const queryRoutes = require('./routes/Queries');
 const { User } = require('./model/User');
 const { isAuth, sanitizeUser, cookieExtractor } = require('./services/common');
 // const { Order } = require('./model/Order');
@@ -182,6 +183,7 @@ server.use('/users', isAuth(), userRoutes.routes);
 server.use('/auth', authRoutes.routes);
 server.use('/cart', isAuth(), cartRoutes.routes);
 server.use('/orders', isAuth(), orderRoutes.routes);
+server.use('/queries', isAuth(), queryRoutes.routes);
 server.get('*', (req, res) => res.sendFile(path.resolve('build', 'index.html')));
 
 // PAYMENTS
