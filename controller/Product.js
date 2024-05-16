@@ -23,8 +23,6 @@ exports.fetchAllProducts = async (req, res) => {
     let query = Product.find(condition);
     let totalProductsQuery = Product.find(condition);
 
-    console.log(req.query.category);
-
     if (req.query.category) {
         query = query.find({ category: {$in: req.query.category.split(',')} });
         totalProductsQuery = totalProductsQuery.find({ category: {$in: req.query.category.split(',')} });
@@ -43,7 +41,6 @@ exports.fetchAllProducts = async (req, res) => {
     }
 
     const totalDocs = await totalProductsQuery.count().exec();
-    console.log('~ TOTAL PRODUCT DOCS: ', totalDocs);
 
     try {
         const docs = await query.exec();

@@ -4,7 +4,6 @@ const { sanitizeUser, sendMail } = require("../services/common");
 const jwt = require('jsonwebtoken');
 
 exports.createUser = async (req, res) => {
-    // const user = new User(req.body);
     const SECRET_KEY = 'TOP_SECRET';
 
     try {

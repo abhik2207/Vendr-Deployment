@@ -86,7 +86,6 @@ exports.fetchALlOrders = async (req, res) => {
     }
 
     const totalDocs = await totalOrdersQuery.count().exec();
-    console.log('~ TOTAL ORDER DOCS: ', totalDocs);
 
     try {
         const docs = await query.exec();

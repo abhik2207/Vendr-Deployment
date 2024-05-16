@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const querySchema = new Schema({
     userEmail: { type: String, required: [true, "Please provide user's email address"] },
     query: { type: String, required: [true, 'Please provide a query from the user'] },
-});
+}, { timestamps: true });
 
 const virtual = querySchema.virtual('id');
 virtual.get(function () {

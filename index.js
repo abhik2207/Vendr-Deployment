@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 require('dotenv').config();
-// console.log(process.env);
 const path = require('path');
 
 var session = require('express-session');
@@ -29,7 +28,7 @@ const { isAuth, sanitizeUser, cookieExtractor } = require('./services/common');
 // const { Order } = require('./model/Order');
 
 
-// WEBHOOK FOR PAYMENTS
+// WEBHOOK FOR STRIPE PAYMENTS
 // const endpointSecret = process.env.WEBHOOK_ENDPOINT_SECRET;
 // server.post('/webhook', express.raw({ type: 'application/json' }), async (request, response) => {
 //     const sig = request.headers['stripe-signature'];
@@ -75,7 +74,7 @@ server.use(session({
 server.use(passport.authenticate('session'));
 
 
-// Initializing passport
+// Initializing passportJS
 // server.use(passport.initialize());
 // server.use(passport.session());
 
@@ -94,7 +93,6 @@ passport.use(
                 if (!user) {
                     console.log("~ No user found with provided email!");
                     return done(null, false, { message: 'User not found' });
-                    // res.status(404).json({ message: 'User not found' });
                 }
 
                 crypto.pbkdf2(
@@ -107,16 +105,12 @@ passport.use(
                         if (!crypto.timingSafeEqual(user.password, hashedPassword)) {
                             console.log("~ Invalid login credentials!");
                             return done(null, false, { message: 'Invalid credentials' });
-                            // res.status(401).json({ message: 'Invalid credentials' });
                         }
                         else {
                             const token = jwt.sign(sanitizeUser(user), process.env.JWT_SECRET_KEY);
                             console.log("~ Logged in a user!");
                             console.log("~ User token:", token);
                             return done(null, { id: user.id, role: user.role, token: token });
-                            // return done(null, token);
-                            // res.status(200).json({ id: user.id, name: user.name, email: user.email, addresses: user.addresses, role: user.role });
-                            // res.status(200).json({ id: user.id, role: user.role });
                         }
                     }
                 );
@@ -133,7 +127,6 @@ passport.use(
 passport.use(
     'jwt',
     new JwtStrategy(opts, async function (jwt_payload, done) {
-        console.log({ jwt_payload });
 
         try {
             const user = await User.findById(jwt_payload.id);
@@ -186,7 +179,7 @@ server.use('/orders', isAuth(), orderRoutes.routes);
 server.use('/queries', isAuth(), queryRoutes.routes);
 server.get('*', (req, res) => res.sendFile(path.resolve('build', 'index.html')));
 
-// PAYMENTS
+// STRIPE PAYMENTS
 // const stripe = require("stripe")(process.env.STRIPE_SERVER_KEY);
 // server.post("/create-payment-intent", async (req, res) => {
 //     const { totalAmount, orderId } = req.body;
@@ -208,7 +201,7 @@ server.get('*', (req, res) => res.sendFile(path.resolve('build', 'index.html')))
 //     });
 // });
 
-// PAYMENT METHOD
+// STRIPE PAYMENT METHOD
 // const paymentMethodDomain = await stripe.paymentMethodDomains.create(
 //     {
 //         domain_name: 'https://vendr-deployment.vercel.app',

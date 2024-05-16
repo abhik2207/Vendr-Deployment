@@ -18,7 +18,6 @@ exports.cookieExtractor = function (req) {
     if (req && req.cookies) {
         token = req.cookies['jwt'];
     }
-    // token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2M2JhYjFhZDY1M2MyMThhMTI4NWUxOSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzE1MTg2NDU4fQ.Z9NYetqKuBWEu7veaKm4t_DYFrFk679nT3eB7phe6cE";
     return token;
 };
 
@@ -35,7 +34,7 @@ const transporter = nodemailer.createTransport({
 
 exports.sendMail = async function ({ to, subject, text, html }) {
     const info = await transporter.sendMail({
-        from: '"Vendr" <abhikinreallife@gmail.com>', // sender address
+        from: '"Vendr" <abhikinreallife@gmail.com>',
         to: to,
         subject: subject,
         text: text,
