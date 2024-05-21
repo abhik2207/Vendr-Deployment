@@ -43,14 +43,14 @@ exports.createUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
     const user = req.user;
     res
-        .cookie('jwt', req.user.token, { expires: new Date(Date.now() + 3600000), httpOnly: true })
+        .cookie('jwt', req.user.token, { expires: new Date(Date.now() + 3600000), httpOnly: true, secure: true, sameSite: 'Strict', path: '/' })
         .status(200)
         .json({ id: user.id, role: user.role });
 };
 
 exports.logoutUser = async (req, res) => {
     res
-        .cookie('jwt', null, { expires: new Date(Date.now()), httpOnly: true })
+        .cookie('jwt', null, { expires: new Date(0), httpOnly: true, secure: true, sameSite: 'Strict', path: '/' })
         .sendStatus(200);
 };
 
